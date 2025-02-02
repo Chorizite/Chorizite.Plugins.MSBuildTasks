@@ -8,6 +8,7 @@
     <ChoriziteSetAssemblyVersionInternal>True</ChoriziteSetAssemblyVersionInternal>
     <ChoriziteSetPackageVersionInternal>True</ChoriziteSetPackageVersionInternal>
     <ChoriziteSetPackageMetaInternal>True</ChoriziteSetPackageMetaInternal>
+    <ChoriziteGenerateDevManifestInternal>True</ChoriziteGenerateDevManifestInternal>
     
     <!-- user overrides -->
     <ChoriziteManifestFileInternal Condition="'$(ChoriziteManifestFile)' != ''">$(ChoriziteManifestFile)</ChoriziteManifestFileInternal>
@@ -17,7 +18,9 @@
     <ChoriziteSetAssemblyVersionInternal Condition="'$(ChoriziteSetAssemblyVersion)' != ''">$(ChoriziteSetAssemblyVersion)</ChoriziteSetAssemblyVersionInternal>
     <ChoriziteSetPackageVersionInternal Condition="'$(ChoriziteSetPackageVersion)' != ''">$(ChoriziteSetPackageVersion)</ChoriziteSetPackageVersionInternal>
     <ChoriziteSetPackageMetaInternal Condition="'$(ChoriziteSetPackageMeta)' != ''">$(ChoriziteSetPackageMeta)</ChoriziteSetPackageMetaInternal>
-</PropertyGroup>
+    <ChoriziteGenerateDevManifestInternal Condition="'$(ChoriziteGenerateDevManifest)' != ''">$(ChoriziteGenerateDevManifest)</ChoriziteGenerateDevManifestInternal>
+  
+  </PropertyGroup>
 
   <!-- Set version / description from manifest.json -->
   <Target Name="SetVersionFromManifest" BeforeTargets="PreBuildEvent">
@@ -67,6 +70,18 @@
     </ItemGroup>
     <Delete Files="@(ExistingPluginSourceFiles)" />
     <Copy SourceFiles="@(PluginSourceFiles)" DestinationFolder="$(PluginInstallDir)\%(PluginSourceFiles.RecursiveDir)" />
+  </Target>
+
+  <!-- Generate manifest.dev.json (only when building in visual studio) -->
+  <Target Name="GenerateDevPluginManifest" AfterTargets="Build" Condition="$(MSBuildRuntimeType)=='Full' And $(ChoriziteCopyPluginOnBuildInternal) And $(ChoriziteGenerateDevManifestInternal)">
+    <PropertyGroup>
+      <ChoriziteJsonSourcePath>$(MSBuildProjectDirectory.Replace("\","\\"))</ChoriziteJsonSourcePath>
+    </PropertyGroup>
+    <WriteLinesToFile
+        File="$(PluginInstallDir)\manifest.dev.json"
+        Lines="{ &quot;source&quot;: &quot;$(ChoriziteJsonSourcePath)&quot; }"
+        Overwrite="true"
+        Encoding="Unicode"/>
   </Target>
 
 </Project>

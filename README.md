@@ -11,7 +11,9 @@ By default this will:
     - PackageId (`manifest.name`) when `ChoriziteSetPackageMeta` is True
     - Authors (`manifest.author`) when `ChoriziteSetPackageMeta` is True
     - Company (`manifest.author`) when `ChoriziteSetPackageMeta` is True
- - Copy the plugin after build to the chorizite plugins directory
+ - When building with Visual Studio:
+    - Copy the plugin after build to the chorizite plugins directory when `ChoriziteCopyPluginOnBuild` is True
+    - Create a manifest.dev.json that points to your project directory for hot-reloading rml assets when `ChoriziteGenerateDevManifest` and `ChoriziteCopyPluginOnBuild` are both True
 
 ## Build task properties:
 ```xml
@@ -36,5 +38,8 @@ By default this will:
     
     <!-- Set to true to set the nuget package meta properties from manifest.json -->
     <ChoriziteSetPackageMeta>True</ChoriziteSetPackageMeta>
-</PropertyGroup>
+    
+    <!-- Set to true to generate manifest.dev.json with hot-reload path set to this projects source directory.
+        This is only valid when `ChoriziteCopyPluginOnBuild` is set to True -->
+    <ChoriziteGenerateDevManifest>True</ChoriziteGenerateDevManifest>
 ```
