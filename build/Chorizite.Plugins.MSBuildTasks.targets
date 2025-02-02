@@ -4,12 +4,20 @@
     <ChoriziteManifestFileInternal>$(MSBuildProjectDirectory)\manifest.json</ChoriziteManifestFileInternal>
     <ChoriziteInstallDirInternal>$(registry:HKEY_LOCAL_MACHINE\SOFTWARE\WOW6432Node\Thrungus\Chorizite)</ChoriziteInstallDirInternal>
     <ChoriziteCopyPluginOnBuildInternal>True</ChoriziteCopyPluginOnBuildInternal>
+    <ChoriziteSetVersionInternal>True</ChoriziteSetVersionInternal>
+    <ChoriziteSetAssemblyVersionInternal>True</ChoriziteSetAssemblyVersionInternal>
+    <ChoriziteSetPackageVersionInternal>True</ChoriziteSetPackageVersionInternal>
+    <ChoriziteSetPackageMetaInternal>True</ChoriziteSetPackageMetaInternal>
     
     <!-- user overrides -->
     <ChoriziteManifestFileInternal Condition="'$(ChoriziteManifestFile)' != ''">$(ChoriziteManifestFile)</ChoriziteManifestFileInternal>
     <ChoriziteInstallDirInternal Condition="'$(ChoriziteInstallDir)' != ''">$(ChoriziteInstallDir)</ChoriziteInstallDirInternal>
     <ChoriziteCopyPluginOnBuildInternal Condition="'$(ChoriziteCopyPluginOnBuild)' != ''">$(ChoriziteCopyPluginOnBuild)</ChoriziteCopyPluginOnBuildInternal>
-  </PropertyGroup>
+    <ChoriziteSetVersionInternal Condition="'$(ChoriziteSetVersion)' != ''">$(ChoriziteSetVersion)</ChoriziteSetVersionInternal>
+    <ChoriziteSetAssemblyVersionInternal Condition="'$(ChoriziteSetAssemblyVersion)' != ''">$(ChoriziteSetAssemblyVersion)</ChoriziteSetAssemblyVersionInternal>
+    <ChoriziteSetPackageVersionInternal Condition="'$(ChoriziteSetPackageVersion)' != ''">$(ChoriziteSetPackageVersion)</ChoriziteSetPackageVersionInternal>
+    <ChoriziteSetPackageMetaInternal Condition="'$(ChoriziteSetPackageMeta)' != ''">$(ChoriziteSetPackageMeta)</ChoriziteSetPackageMetaInternal>
+</PropertyGroup>
 
   <!-- Set version / description from manifest.json -->
   <Target Name="SetVersionFromManifest" BeforeTargets="PreBuildEvent">
@@ -23,13 +31,15 @@
     </AssemblyInfoFromManifest>
     <Message Text="Read manifest for $(ManifestName): $(ManifestVersion)" Importance="high" />
     <PropertyGroup>
-      <Version>$(ManifestVersion)</Version>
-      <PackageVersion>$(ManifestVersion)</PackageVersion>
-      <AssemblyVersion>$(ManifestAssemblyVersion)</AssemblyVersion>
-      <Description>$(ManifestDescription)</Description>
+      <Version Condition="$(ChoriziteSetVersionInternal)">$(ManifestVersion)"</Version>
+      <PackageVersion Condition="$(ChoriziteSetPackageVersionInternal)">$(ManifestVersion)</PackageVersion>
+      <AssemblyVersion Condition="$(ChoriziteSetAssemblyVersionInternal)">$(ManifestAssemblyVersion)</AssemblyVersion>
+    </PropertyGroup>
+    <PropertyGroup Condition="$(ChoriziteSetPackageMetaInternal)">
       <Title>$(ManifestName)</Title>
       <Product>$(ManifestName)</Product>
       <PackageId>$(ManifestName)</PackageId>
+      <Description>$(ManifestDescription)</Description>
       <Authors>$(ManifestAuthor)</Authors>
       <Company>$(ManifestAuthor)</Company>
       <Description>$(ManifestDescription)</Description>
