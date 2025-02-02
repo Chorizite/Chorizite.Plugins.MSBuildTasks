@@ -1,16 +1,16 @@
 ﻿# Chorizite plugin msbuild tasks
 
 By default this will:
-  - Update the following build properties based on data read from `ChoriziteManifestFile`:
-    - Version (version)
-    - PackageVersion (version)
-    - AssemblyVersion (<major version>.0.0)
-    - Description (description)
-    - Title (name)
-    - Product (name)
-    - PackageId (name)
-    - Authors (author)
-    - Company (author)
+  - Update the following build properties based on data read from `ChoriziteManifestFile` json:
+    - Version (`manifest.version`) when `ChoriziteSetVersion` is True
+    - PackageVersion (`manifest.version`) when `ChoriziteSetPackageVersion` is True
+    - AssemblyVersion (`manifest.version.major`.0.0) when `ChoriziteSetAssemblyVersion` is True
+    - Description (`manifest.description`) when `ChoriziteSetPackageMeta` is True
+    - Title (`manifest.name`) when `ChoriziteSetPackageMeta` is True
+    - Product (`manifest.name`) when `ChoriziteSetPackageMeta` is True
+    - PackageId (`manifest.name`) when `ChoriziteSetPackageMeta` is True
+    - Authors (`manifest.author`) when `ChoriziteSetPackageMeta` is True
+    - Company (`manifest.author`) when `ChoriziteSetPackageMeta` is True
  - Copy the plugin after build to the chorizite plugins directory
 
 ## Build task properties:
