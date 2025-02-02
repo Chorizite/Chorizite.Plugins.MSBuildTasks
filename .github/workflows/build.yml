@@ -25,15 +25,16 @@ jobs:
         run: |
           dotnet restore                        # install packages
           dotnet build -c Release --no-restore  # build
+          ls -lah "${{ github.workspace }}/bin/"
         
       - uses: actions/upload-artifact@v4
         with: 
           name: "Chorizite.Plugins.MSBuildTasks.${{ env.GitVersion_FullSemVer }}.nupkg"
-          path: "${{ github.workspace }}bin/Chorizite.Plugins.MSBuildTasks.${{ env.GitVersion_FullSemVer }}.nupkg"
+          path: "${{ github.workspace }}/bin/Chorizite.Plugins.MSBuildTasks.${{ env.GitVersion_FullSemVer }}.nupkg"
 
       - uses: actions/upload-artifact@v4
         with: 
-          name: "Chorizite.Plugins.MSBuildTasks.${{ env.GitVersion_FullSemVer }}.zip"
+          name: "Chorizite.Plugins.MSBuildTasks.${{ env.GitVersion_FullSemVer }}"
           path: "${{ github.workspace }}/bin/Release/netstandard2.0/"
 
       - name: Push NuGet Package
