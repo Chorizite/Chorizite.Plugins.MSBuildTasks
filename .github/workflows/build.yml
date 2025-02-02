@@ -40,5 +40,5 @@ jobs:
       - name: Push NuGet Package
         run: |
           dotnet nuget add source --username Chorizite --password ${{ secrets.CI_NUGET_API_KEY }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/Chorizite/index.json"
-          dotnet nuget push "${{ github.workspace }}/bin/Release/Chorizite.Plugins.MSBuildTasks.${{ env.GitVersion_FullSemVer }}.nupkg" --api-key ${{ secrets.CI_NUGET_API_KEY }} --source "github"
+          dotnet nuget push "${{ github.workspace }}/bin/Chorizite.Plugins.MSBuildTasks.${{ env.GitVersion_FullSemVer }}.nupkg" --api-key ${{ secrets.CI_NUGET_API_KEY }} --source "github"
       

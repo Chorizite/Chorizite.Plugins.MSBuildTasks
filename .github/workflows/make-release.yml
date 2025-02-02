@@ -72,7 +72,7 @@ jobs:
               --repo="$GITHUB_REPOSITORY" \
               --title="Release v${{ env.GitVersion_FullSemVer }}" \
               --generate-notes \
-              "${{ github.workspace }}/bin/Release/Chorizite.Plugins.MSBuildTasks.${{ env.GitVersion_FullSemVer }}.nupkg#Chorizite.Plugins.MSBuildTasks.${{ env.GitVersion_FullSemVer }}.nupkg"
+              "${{ github.workspace }}/bin/Chorizite.Plugins.MSBuildTasks.${{ env.GitVersion_FullSemVer }}.nupkg#Chorizite.Plugins.MSBuildTasks.${{ env.GitVersion_FullSemVer }}.nupkg"
               
       - name: Bump version
         run: |
