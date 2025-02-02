@@ -1,0 +1,62 @@
+<Project>
+  <PropertyGroup>
+    <!-- defaults -->
+    <ChoriziteManifestFileInternal>$(MSBuildProjectDirectory)\manifest.json</ChoriziteManifestFileInternal>
+    <ChoriziteInstallDirInternal>$(registry:HKEY_LOCAL_MACHINE\SOFTWARE\WOW6432Node\Thrungus\Chorizite)</ChoriziteInstallDirInternal>
+    <ChoriziteCopyPluginOnBuildInternal>True</ChoriziteCopyPluginOnBuildInternal>
+    
+    <!-- user overrides -->
+    <ChoriziteManifestFileInternal Condition="'$(ChoriziteManifestFile)' != ''">$(ChoriziteManifestFile)</ChoriziteManifestFileInternal>
+    <ChoriziteInstallDirInternal Condition="'$(ChoriziteInstallDir)' != ''">$(ChoriziteInstallDir)</ChoriziteInstallDirInternal>
+    <ChoriziteCopyPluginOnBuildInternal Condition="'$(ChoriziteCopyPluginOnBuild)' != ''">$(ChoriziteCopyPluginOnBuild)</ChoriziteCopyPluginOnBuildInternal>
+  </PropertyGroup>
+
+  <!-- Set version / description from manifest.json -->
+  <Target Name="SetVersionFromManifest" BeforeTargets="PreBuildEvent">
+    <Message Text="Using plugin manifest file: $(ChoriziteManifestFileInternal)" Importance="high" />
+    <AssemblyInfoFromManifest ManifestFile="$(ChoriziteManifestFileInternal)">
+      <Output PropertyName="ManifestVersion" TaskParameter="ManifestVersion" />
+      <Output PropertyName="ManifestAssemblyVersion" TaskParameter="ManifestAssemblyVersion" />
+      <Output PropertyName="ManifestName" TaskParameter="ManifestName" />
+      <Output PropertyName="ManifestDescription" TaskParameter="ManifestDescription" />
+      <Output PropertyName="ManifestAuthor" TaskParameter="ManifestAuthor" />
+    </AssemblyInfoFromManifest>
+    <Message Text="Read manifest for $(ManifestName): $(ManifestVersion)" Importance="high" />
+    <PropertyGroup>
+      <Version>$(ManifestVersion)</Version>
+      <PackageVersion>$(ManifestVersion)</PackageVersion>
+      <AssemblyVersion>$(ManifestAssemblyVersion)</AssemblyVersion>
+      <Description>$(ManifestDescription)</Description>
+      <Title>$(ManifestName)</Title>
+      <Product>$(ManifestName)</Product>
+      <PackageId>$(ManifestName)</PackageId>
+      <Authors>$(ManifestAuthor)</Authors>
+      <Company>$(ManifestAuthor)</Company>
+      <Description>$(ManifestDescription)</Description>
+    </PropertyGroup>
+  </Target>
+
+  <!-- Check for Chorizite install directory registry entry (only when building in visual studio) -->
+  <Target Name="CheckForChoriziteInstall" AfterTargets="Build" Condition="$(MSBuildRuntimeType)=='Full' And '$(ChoriziteInstallDirInternal)' != '' And !Exists('$(ChoriziteInstallDirInternal)') And $(ChoriziteCopyPluginOnBuildInternal)">
+    <Error Text="Chorizite install directory not found in the registry (HKEY_LOCAL_MACHINE\SOFTWARE\WOW6432Node\Thrungus\Chorizite). Install Chorizite first." />
+  </Target>
+  
+  <!-- Copy plugin to Chorizite install directory (only when building in visual studio) -->
+  <Target Name="CopyPluginToChoriziteInstall" AfterTargets="Build" Condition="$(MSBuildRuntimeType)=='Full' And $(ChoriziteCopyPluginOnBuildInternal)">
+    <PropertyGroup>
+      <PluginInstallDir>$(ChoriziteInstallDirInternal)\plugins\$(ManifestName)</PluginInstallDir>
+    </PropertyGroup>
+    <ItemGroup>
+      <PluginSourceFiles Include="$(OutDir)\**\*.*" />
+    </ItemGroup>
+    <Message Text="Using Chorizite install directory: $(ChoriziteInstallDirInternal)" Importance="high" />
+    <Message Text="Copying plugin to: $(PluginInstallDir)" Importance="high" />
+    <MakeDir Directories="$(PluginInstallDir)" Condition="!Exists('$(PluginInstallDir)\')" />
+    <ItemGroup>
+      <ExistingPluginSourceFiles Include="$(PluginInstallDir)\**\*.*" />
+    </ItemGroup>
+    <Delete Files="@(ExistingPluginSourceFiles)" />
+    <Copy SourceFiles="@(PluginSourceFiles)" DestinationFolder="$(PluginInstallDir)\%(PluginSourceFiles.RecursiveDir)" />
+  </Target>
+
+</Project>

@@ -5,7 +5,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Text.Json;
 
-namespace Chorizite.Plugins.MSBuildTasks
+namespace Chorizite.Plugins.MSBuildTasks.Lib
 {
     public class PluginManifest
     {
@@ -30,7 +30,7 @@ namespace Chorizite.Plugins.MSBuildTasks
         [JsonIgnore]
         public string BaseDirectory => Path.GetDirectoryName(ManifestFile)!;
 
-        public static bool TryLoadManifest<T>(string filename, out T manifest, out string? errorString) where T : PluginManifest
+        public static bool TryLoadManifest<T>(string filename, out T manifest, out string errorString) where T : PluginManifest
         {
             try
             {

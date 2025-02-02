@@ -49,19 +49,19 @@ jobs:
         
       - uses: actions/upload-artifact@v4
         with: 
-          name: "Chorizite.ACProtocol.${{ env.GitVersion_FullSemVer }}.nupkg"
-          path: "${{ github.workspace }}/Chorizite.ACProtocol/bin/Release/Chorizite.ACProtocol.${{ env.GitVersion_FullSemVer }}.nupkg"
+          name: "Chorizite.Plugins.MSBuildTasks.${{ env.GitVersion_FullSemVer }}.nupkg"
+          path: "${{ github.workspace }}/bin/Chorizite.Plugins.MSBuildTasks.${{ env.GitVersion_FullSemVer }}.nupkg"
 
       - uses: actions/upload-artifact@v4
         with: 
-          name: "Chorizite.ACProtocol.${{ env.GitVersion_FullSemVer }}.zip"
-          path: "${{ github.workspace }}/Chorizite.ACProtocol/bin/Release/netstandard2.0/"
+          name: "Chorizite.Plugins.MSBuildTasks.${{ env.GitVersion_FullSemVer }}.zip"
+          path: "${{ github.workspace }}/bin/Release/netstandard2.0/"
       
       - name: Push GitHub NuGet Package
         run: |
           dotnet nuget add source --username Chorizite --password ${{ secrets.CI_NUGET_API_KEY }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/Chorizite/index.json"
-          dotnet nuget push "${{ github.workspace }}/Chorizite.ACProtocol/bin/Release/Chorizite.ACProtocol.${{ env.GitVersion_FullSemVer }}.nupkg" --api-key ${{ secrets.CI_NUGET_API_KEY }} --source "github"
-          dotnet nuget push "${{ github.workspace }}/Chorizite.ACProtocol/bin/Release/Chorizite.ACProtocol.${{ env.GitVersion_FullSemVer }}.nupkg" --api-key ${{ secrets.NUGET_DEPLOY_KEY }} --source https://api.nuget.org/v3/index.json
+          dotnet nuget push "${{ github.workspace }}/bin/Chorizite.Plugins.MSBuildTasks.${{ env.GitVersion_FullSemVer }}.nupkg" --api-key ${{ secrets.CI_NUGET_API_KEY }} --source "github"
+          dotnet nuget push "${{ github.workspace }}/bin/Chorizite.Plugins.MSBuildTasks.${{ env.GitVersion_FullSemVer }}.nupkg" --api-key ${{ secrets.NUGET_DEPLOY_KEY }} --source https://api.nuget.org/v3/index.json
 
       - name: Create release
         env:
@@ -72,7 +72,7 @@ jobs:
               --repo="$GITHUB_REPOSITORY" \
               --title="Release v${{ env.GitVersion_FullSemVer }}" \
               --generate-notes \
-              "${{ github.workspace }}/Chorizite.ACProtocol/bin/Release/Chorizite.ACProtocol.${{ env.GitVersion_FullSemVer }}.nupkg#Chorizite.ACProtocol.${{ env.GitVersion_FullSemVer }}.nupkg"
+              "${{ github.workspace }}/bin/Release/Chorizite.Plugins.MSBuildTasks.${{ env.GitVersion_FullSemVer }}.nupkg#Chorizite.Plugins.MSBuildTasks.${{ env.GitVersion_FullSemVer }}.nupkg"
               
       - name: Bump version
         run: |

@@ -25,20 +25,19 @@ jobs:
         run: |
           dotnet restore                        # install packages
           dotnet build -c Release --no-restore  # build
-          ls -lah "${{ github.workspace }}/Chorizite.ACProtocol/bin/Release/"
         
       - uses: actions/upload-artifact@v4
         with: 
-          name: "Chorizite.ACProtocol.${{ env.GitVersion_FullSemVer }}.nupkg"
-          path: "${{ github.workspace }}/Chorizite.ACProtocol/bin/Release/Chorizite.ACProtocol.${{ env.GitVersion_FullSemVer }}.nupkg"
+          name: "Chorizite.Plugins.MSBuildTasks.${{ env.GitVersion_FullSemVer }}.nupkg"
+          path: "${{ github.workspace }}bin/Chorizite.Plugins.MSBuildTasks.${{ env.GitVersion_FullSemVer }}.nupkg"
 
       - uses: actions/upload-artifact@v4
         with: 
-          name: "Chorizite.ACProtocol.${{ env.GitVersion_FullSemVer }}.zip"
-          path: "${{ github.workspace }}/Chorizite.ACProtocol/bin/Release/netstandard2.0/"
+          name: "Chorizite.Plugins.MSBuildTasks.${{ env.GitVersion_FullSemVer }}.zip"
+          path: "${{ github.workspace }}/bin/Release/netstandard2.0/"
 
       - name: Push NuGet Package
         run: |
           dotnet nuget add source --username Chorizite --password ${{ secrets.CI_NUGET_API_KEY }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/Chorizite/index.json"
-          dotnet nuget push "${{ github.workspace }}/Chorizite.ACProtocol/bin/Release/Chorizite.ACProtocol.${{ env.GitVersion_FullSemVer }}.nupkg" --api-key ${{ secrets.CI_NUGET_API_KEY }} --source "github"
+          dotnet nuget push "${{ github.workspace }}/bin/Release/Chorizite.Plugins.MSBuildTasks.${{ env.GitVersion_FullSemVer }}.nupkg" --api-key ${{ secrets.CI_NUGET_API_KEY }} --source "github"
       

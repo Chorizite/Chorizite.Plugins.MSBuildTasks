@@ -6,6 +6,7 @@
     <NoPackageAnalysis>true</NoPackageAnalysis>
     <BuildOutputTargetFolder>tasks</BuildOutputTargetFolder>
     <PackageOutputPath>bin\</PackageOutputPath>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
   </PropertyGroup>
   
   <PropertyGroup>
@@ -28,6 +29,8 @@
   </PropertyGroup>
 
   <Target Name="VSGitVersion" BeforeTargets="PreBuildEvent" Condition="$(MSBuildRuntimeType)=='Full'">
+    <Message Text="Delete $(NuGetPackageRoot)$(PackageId)" Importance="high" />
+    <RemoveDir Directories="$(NuGetPackageRoot)$(PackageId)" />
     <Exec Command="$(NuGetPackageRoot)\gitversion.msbuild\6.1.0\tools\net8.0\gitversion.exe -showvariable SemVer" ConsoleToMSBuild="true">
       <Output TaskParameter="ConsoleOutput" PropertyName="Version" />
       <Output TaskParameter="ConsoleOutput" PropertyName="PackageVersion" />
@@ -36,13 +39,24 @@
       <Output TaskParameter="ConsoleOutput" PropertyName="AssemblyVersion" />
     </Exec>
   </Target>
-
+  
+  <Target Name="PackTaskDependencies" BeforeTargets="GenerateNuspec">
+    <ItemGroup>
+      <_PackageFiles Include="bin\$(Configuration)\$(TargetFramework)\*.dll">
+        <PackagePath>tasks\$(TargetFramework)\%(RecursiveDir)</PackagePath>
+        <Visible>false</Visible>
+        <BuildAction>Content</BuildAction>
+      </_PackageFiles>
+    </ItemGroup>
+  </Target>
+  
   <ItemGroup>
     <None Update="README.md">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
     <Content Include="build\Chorizite.Plugins.MSBuildTasks.props" PackagePath="build\" />
+    <Content Include="build\Chorizite.Plugins.MSBuildTasks.targets" PackagePath="build\" />
   </ItemGroup>
   
   <ItemGroup>
