@@ -1,0 +1,7 @@
+<Project TreatAsLocalProperty="TaskAssembly">
+  <PropertyGroup>
+    <TaskAssembly>$(MSBuildThisFileDirectory)..\tasks\netstandard2.0\Chorizite.Plugins.MSBuildTasks.dll</TaskAssembly>
+  </PropertyGroup>
+  
+  <UsingTask TaskName="Chorizite.Plugins.MSBuildTasks.AssemblyInfoFromManifest" AssemblyFile="$(TaskAssembly)" />
+</Project>

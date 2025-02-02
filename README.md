@@ -1,0 +1,1 @@
+﻿# Chorizite plugin msbuild tasks
