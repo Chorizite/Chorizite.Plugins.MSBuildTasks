@@ -21,6 +21,9 @@ namespace Chorizite.Plugins.MSBuildTasks
         public string ManifestAssemblyVersion { get; set; }
 
         [Output]
+        public string ManifestId { get; set; }
+
+        [Output]
         public string ManifestName { get; set; }
 
         [Output]
@@ -44,11 +47,12 @@ namespace Chorizite.Plugins.MSBuildTasks
 
             var manifest = JsonNode.Parse(File.ReadAllText(ManifestFile)).AsObject();
 
-            ManifestVersion = manifest["version"].ToString();
-            ManifestName = manifest["name"].ToString();
-            ManifestDescription = manifest["description"].ToString();
+            ManifestVersion = manifest["version"]?.ToString();
+            ManifestId = manifest["id"].ToString();
+            ManifestName = manifest["id"].ToString();
+            ManifestDescription = manifest["description"]?.ToString() ?? "";
             ManifestAssemblyVersion = ManifestVersion.Split('.')[0] + ".0.0";
-            ManifestAuthor = manifest["author"].ToString();
+            ManifestAuthor = manifest["author"]?.ToString() ?? "";
 
             return true;
         }

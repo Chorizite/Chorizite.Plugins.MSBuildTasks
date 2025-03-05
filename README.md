@@ -7,8 +7,8 @@ By default this will:
     - AssemblyVersion (`manifest.version.major`.0.0) when `ChoriziteSetAssemblyVersion` is True
     - Description (`manifest.description`) when `ChoriziteSetPackageMeta` is True
     - Title (`manifest.name`) when `ChoriziteSetPackageMeta` is True
-    - Product (`manifest.name`) when `ChoriziteSetPackageMeta` is True
-    - PackageId (`manifest.name`) when `ChoriziteSetPackageMeta` is True
+    - Product (`manifest.id`) when `ChoriziteSetPackageMeta` is True
+    - PackageId (`manifest.id`) when `ChoriziteSetPackageMeta` is True
     - Authors (`manifest.author`) when `ChoriziteSetPackageMeta` is True
     - Company (`manifest.author`) when `ChoriziteSetPackageMeta` is True
  - When building with Visual Studio:
