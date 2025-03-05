@@ -29,10 +29,11 @@
       <Output PropertyName="ManifestVersion" TaskParameter="ManifestVersion" />
       <Output PropertyName="ManifestAssemblyVersion" TaskParameter="ManifestAssemblyVersion" />
       <Output PropertyName="ManifestName" TaskParameter="ManifestName" />
+      <Output PropertyName="ManifestId" TaskParameter="ManifestId" />
       <Output PropertyName="ManifestDescription" TaskParameter="ManifestDescription" />
       <Output PropertyName="ManifestAuthor" TaskParameter="ManifestAuthor" />
     </AssemblyInfoFromManifest>
-    <Message Text="Read manifest for $(ManifestName): $(ManifestVersion)" Importance="high" />
+    <Message Text="Read manifest for $(ManifestId): $(ManifestVersion)" Importance="high" />
     <PropertyGroup>
       <Version Condition="$(ChoriziteSetVersionInternal)">$(ManifestVersion)"</Version>
       <PackageVersion Condition="$(ChoriziteSetPackageVersionInternal)">$(ManifestVersion)</PackageVersion>
@@ -40,8 +41,8 @@
     </PropertyGroup>
     <PropertyGroup Condition="$(ChoriziteSetPackageMetaInternal)">
       <Title>$(ManifestName)</Title>
-      <Product>$(ManifestName)</Product>
-      <PackageId>$(ManifestName)</PackageId>
+      <Product>$(ManifestId)</Product>
+      <PackageId>$(ManifestId)</PackageId>
       <Description>$(ManifestDescription)</Description>
       <Authors>$(ManifestAuthor)</Authors>
       <Company>$(ManifestAuthor)</Company>
@@ -57,7 +58,7 @@
   <!-- Copy plugin to Chorizite install directory (only when building in visual studio) -->
   <Target Name="CopyPluginToChoriziteInstall" AfterTargets="Build" Condition="$(MSBuildRuntimeType)=='Full' And $(ChoriziteCopyPluginOnBuildInternal)">
     <PropertyGroup>
-      <PluginInstallDir>$(ChoriziteInstallDirInternal)\plugins\$(ManifestName)</PluginInstallDir>
+      <PluginInstallDir>$(ChoriziteInstallDirInternal)\plugins\$(ManifestId)</PluginInstallDir>
     </PropertyGroup>
     <ItemGroup>
       <PluginSourceFiles Include="$(OutDir)\**\*.*" />
